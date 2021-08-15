@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { StreamChat } from "stream-chat";
-import ChannelCard from "./ChannelCard";
+import ChannelCard from "../Components/ChannelCard";
 import { PORT } from "../config/constants";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 const Join = () => {
   const [token, setToken] = useState(null);
@@ -14,7 +16,6 @@ const Join = () => {
   const [channelMembers, setChannelMembers] = useState([]);
   const [listOfChannels, setListOfChannels] = useState(null);
 
-  console.log("api key", process.env.REACT_APP_API_KEY);
   // console.log("channelType:", channelType);
   // console.log("channelName:", channelName);
   // console.log("channelId:", channelId);
@@ -26,7 +27,7 @@ const Join = () => {
     //Initialize client and setting current user
     const initializeClient = async () => {
       //Instantiate the app
-      const client = StreamChat.getInstance(process.env.REACT_APP_API_KEY);
+      const client = StreamChat.getInstance(API_KEY);
       //open the WS connectio to start receive events
       await client.connectUser({ id: userId }, token);
       setChatClient(client);
