@@ -1,21 +1,42 @@
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+//Actions and Selectors
+import { selectChatClient } from "../store/login/selectors";
+
 export default function LobbyPage() {
-  //     //QUERY Channels
+  const history = useHistory();
+  const [listOfChannels, setListOfChannels] = useState(null);
+  const chatClient = useSelector(selectChatClient);
+  console.log(chatClient);
+  if (!chatClient) {
+    history.push("/");
+  }
+  //   const userId = chatClient.me.id;
+
+  //Fetch Channels
   //   const fetchChannels = async () => {
+  //     //filter to pass into the query
   //     const filter = {
   //       members: { $in: [userId] },
   //       type: {
   //         $in: ["messaging", "livestream"],
   //       },
   //     };
+  //     //query channels from API
   //     const result = await chatClient.queryChannels(filter);
   //     setListOfChannels(result);
-  //     return result;
   //   };
   //   console.log(
   //     "what is listOfChannels",
   //     listOfChannels,
   //     Array.isArray(listOfChannels)
   //   );
+
+  //   useEffect(() => {
+  //     fetchChannels();
+  //   }, []);
 
   return (
     <div className="container border">

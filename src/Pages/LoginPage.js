@@ -16,7 +16,7 @@ export default function LoginPage() {
   const history = useHistory();
 
   useEffect(() => {
-    if (chatClient.me) {
+    if (chatClient) {
       history.push("/lobby");
     }
   }, [chatClient]);

@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { CHAT_CLIENT_CONNECTED } from "./actions";
 
-const initialState = {};
+const initialState = null;
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
