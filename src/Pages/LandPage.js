@@ -1,9 +1,9 @@
-import Login from "./Login";
+import LoginPage from "./LoginPage";
 
 export default function LandPage() {
   return (
     <div>
-      <Login />
+      <LoginPage />
     </div>
   );
 }
