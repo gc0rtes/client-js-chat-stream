@@ -1,3 +1,4 @@
+import "./App.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Join from "./Pages/Join";
 import Test from "./Pages/Test";

@@ -1,38 +1,38 @@
 .card {
-    text-align: center;
-    padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
-    border-radius: 15px; /* 5px rounded corners */
-  }
-  
-  .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  }
-  
-  .card a {
-    background-color: goldenrod;
-    color: white;
-    padding: 0.5em 1em;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 0.75em;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
-    text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
-  }
-  /* affect just the links inside a .card div*/
-  .card a:hover {
-    background-color: #555;
-  }
-  
-  .card a:active {
-    background-color: black;
-  }
-  
-  .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px 16px;
-  }
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 15px; /* 5px rounded corners */
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card a {
+  background-color: goldenrod;
+  color: white;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
+  text-shadow: rgba(0, 0, 0, 0.4) 0 1px 0;
+}
+/* affect just the links inside a .card div*/
+.card a:hover {
+  background-color: #555;
+}
+
+.card a:active {
+  background-color: black;
+}
+
+.container-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 16px;
+}

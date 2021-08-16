@@ -3,7 +3,7 @@ import "./cards.css";
 
 export default function ChannelCard(props) {
   return (
-    <div className="container">
+    <div className="container-card">
       <div className="card">
         <h5>Name: {props.name} </h5>
         <h6>id: {props.id}</h6>
