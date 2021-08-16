@@ -1,12 +1,14 @@
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Join from "./Pages/Join";
-import Chat from "./Pages/Chat";
 import Test from "./Pages/Test";
+import LandPage from "./Pages/LandPage";
+import LobbyPage from "./Pages/LobbyPage";
 
 const App = () => (
   <Router>
-    <Route exact path="/" component={Join} />
-    <Route path="/chat" component={Chat} />
+    <Route exact path="/" component={LandPage} />
+    <Route path="/lobby" component={LobbyPage} />
+    <Route path="/join" component={Join} />
     <Route path="/test" component={Test} />
   </Router>
 );

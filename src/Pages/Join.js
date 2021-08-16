@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { StreamChat } from "stream-chat";
 import ChannelCard from "../Components/ChannelCard";
-import { PORT } from "../config/constants";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const PORT = process.env.REACT_APP_PORT;
 
 const Join = () => {
   const [token, setToken] = useState(null);
