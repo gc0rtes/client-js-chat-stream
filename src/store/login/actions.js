@@ -23,7 +23,7 @@ export const getChatClient = (userId) => {
         { id: userId },
         response.data.token
       );
-      console.log("what is chatClient", chatClient);
+      // console.log("what is chatClient", chatClient);
 
       dispatch(chatClientConnected(chatClient));
     } catch (err) {

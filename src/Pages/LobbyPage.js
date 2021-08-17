@@ -7,49 +7,56 @@ import { StreamChat } from "stream-chat";
 import { selectChatClient } from "../store/login/selectors";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+
+// Instantiate the client with getInstance().
+//   Obs: It doesn’t actually make an API call.
+//   It is a constructor function to create a JS object with lots of functions.
 const client = StreamChat.getInstance(API_KEY);
 
 export default function LobbyPage() {
-  const [listOfChannels, setListOfChannels] = useState(null);
+  const [newMessage, setNewMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+
   const history = useHistory();
   const chatClient = useSelector(selectChatClient);
+
+  // Check if the client is connected.
+  // Obs: response of client.connectUser(userId, token)
   if (!chatClient) {
     history.push("/");
   }
-  console.log("chatClient", chatClient);
 
-  const userId = chatClient.me.id;
-  console.log("userId", userId);
+  // Initialize a channel (hardcoded)
+  const channel = client.channel("livestream", "general");
 
-  //Create a channel
-
-  const channel = client.channel("livestream", "lobby");
-  console.log("what is channel?", channel);
-
-  //   //   Query Channels
-  const getChannels = async () => {
-    //filter to pass into the query
-    const filter = {
-      members: { $in: [userId] },
-      type: {
-        $in: ["messaging", "livestream"],
-      },
-    };
-    //query channels from API
-    const result = await client.queryChannels(filter);
-    setListOfChannels(result);
-    return result;
+  // Watch channel
+  const watchChannel = async () => {
+    await channel.watch();
   };
-  console.log(
-    "what is listOfChannels",
-    listOfChannels,
-    Array.isArray(listOfChannels)
-  );
-
   useEffect(() => {
-    getChannels().then((r) => console.log(r));
-    console.log("fetchChannels() was called");
-  }, []);
+    watchChannel();
+    console.log("useEffect 1");
+  }, []); //empty array to run just once at mounting component
+
+  // Function to get new messages
+  useEffect(() => {
+    channel.on("message.new", (event) => {
+      setMessages([...messages, event.message]);
+    });
+    console.log("useEffect 2");
+  }, [messages]); //we want to run this only when messages array changes
+
+  // Function for sending messages
+  const sendNewMessage = async (message) => {
+    await channel.sendMessage({ text: message });
+  };
+  // Function to handle submit form
+  const handleSubmit = (e) => {
+    e.preventDefault(); // prevent browswer to refresh when click on button
+    sendNewMessage(newMessage);
+  };
+
+  console.log(newMessage, messages);
 
   return (
     <div className="container border">
@@ -63,7 +70,17 @@ export default function LobbyPage() {
           <div className="border" style={{ height: "95%" }}>
             <h2>Chat</h2>
           </div>
-          <div className="border py-1">message</div>
+          <div className="border py-1">
+            <form onSubmit={handleSubmit}>
+              <input
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                type="text"
+                placeholder="type your message"
+              />
+              <button>send</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
