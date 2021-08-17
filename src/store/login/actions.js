@@ -6,7 +6,7 @@ const client = StreamChat.getInstance(API_KEY);
 
 export const CHAT_CLIENT_CONNECTED = "CHAT_CLIENT_CONNECTED";
 
-const chatClientconnected = (event) => ({
+const chatClientConnected = (event) => ({
   type: CHAT_CLIENT_CONNECTED,
   payload: event,
 });
@@ -23,12 +23,9 @@ export const getChatClient = (userId) => {
         { id: userId },
         response.data.token
       );
-      //   console.log("what is chatClient", chatClient);
+      console.log("what is chatClient", chatClient);
 
-      if (chatClient) {
-        // console.log("chatClient is active!");
-      }
-      dispatch(chatClientconnected(chatClient));
+      dispatch(chatClientConnected(chatClient));
     } catch (err) {
       // use client.disconnect() before trying to connect as a different user
       console.log("client connection failed", err);
