@@ -21,7 +21,7 @@ export default function LobbyPage() {
   const chatClient = useSelector(selectChatClient);
 
   // Check if the client is connected.
-  // Obs: response of client.connectUser(userId, token)
+  // Obs: chatClient is the response from client.connectUser(userId, token)
   if (!chatClient) {
     history.push("/");
   }
@@ -35,15 +35,14 @@ export default function LobbyPage() {
   };
   useEffect(() => {
     watchChannel();
-    console.log("useEffect 1");
   }, []); //empty array to run just once at mounting component
 
   // Function to get new messages
   useEffect(() => {
     channel.on("message.new", (event) => {
+      //unpack values from array and add the new message
       setMessages([...messages, event.message]);
     });
-    console.log("useEffect 2");
   }, [messages]); //we want to run this only when messages array changes
 
   // Function for sending messages
@@ -54,6 +53,7 @@ export default function LobbyPage() {
   const handleSubmit = (e) => {
     e.preventDefault(); // prevent browswer to refresh when click on button
     sendNewMessage(newMessage);
+    setNewMessage("");
   };
 
   console.log(newMessage, messages);
@@ -69,14 +69,18 @@ export default function LobbyPage() {
         <div className="col-9 border">
           <div className="border" style={{ height: "95%" }}>
             <h2>Chat</h2>
+
+            {messages.map((message, index) => (
+              <div key={index}>{`${message.user.id} > ${message.text}`}</div>
+            ))}
           </div>
           <div className="border py-1">
             <form onSubmit={handleSubmit}>
               <input
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
                 type="text"
                 placeholder="type your message"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
               />
               <button>send</button>
             </form>
