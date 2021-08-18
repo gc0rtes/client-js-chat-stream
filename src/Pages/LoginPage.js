@@ -1,3 +1,4 @@
+import "./LoginPage.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -27,15 +28,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter userId"
-          onChange={(e) => setUserId(e.target.value)}
-        />
-        <button>Login</button>
-      </form>
+    <div className="vertical-center">
+      <div className="container text-center">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Enter userId"
+            onChange={(e) => setUserId(e.target.value)}
+          />
+          <button>Login</button>
+        </form>
+      </div>
     </div>
   );
 }

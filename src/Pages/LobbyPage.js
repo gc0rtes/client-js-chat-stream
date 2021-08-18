@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { StreamChat } from "stream-chat";
+import moment from "moment";
 
 //Actions and Selectors
-import { selectChatClient } from "../store/login/selectors";
+import {
+  selectChatClient,
+  selectUserIdChatClient,
+} from "../store/login/selectors";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -19,6 +23,7 @@ export default function LobbyPage() {
 
   const history = useHistory();
   const chatClient = useSelector(selectChatClient);
+  const userId = useSelector(selectUserIdChatClient);
 
   // Check if the client is connected.
   // Obs: chatClient is the response from client.connectUser(userId, token)
@@ -31,11 +36,12 @@ export default function LobbyPage() {
 
   // Watch channel
   const watchChannel = async () => {
-    await channel.watch();
+    const state = await channel.watch();
+    console.log("what is state?", state);
   };
   useEffect(() => {
     watchChannel();
-  }, []); //empty array to run just once at mounting component
+  }, []); //empty array to run just once at mounting component - for now
 
   // Function to get new messages
   useEffect(() => {
@@ -49,6 +55,7 @@ export default function LobbyPage() {
   const sendNewMessage = async (message) => {
     await channel.sendMessage({ text: message });
   };
+
   // Function to handle submit form
   const handleSubmit = (e) => {
     e.preventDefault(); // prevent browswer to refresh when click on button
@@ -71,7 +78,19 @@ export default function LobbyPage() {
             <h2>Chat</h2>
 
             {messages.map((message, index) => (
-              <div key={index}>{`${message.user.id} > ${message.text}`}</div>
+              // message.user.id === userId ? setToggleAlign("text-left") :  setToggleAlign("text-right");
+              <div
+                key={index}
+                className={
+                  message.user.id === userId ? "text-right" : "text-left"
+                }
+              >
+                <div>{`${message.user.id} > ${message.text} (${moment(
+                  message.created_at
+                ).format("ll")} at ${moment(message.created_at).format(
+                  "HH:mm"
+                )})`}</div>
+              </div>
             ))}
           </div>
           <div className="border py-1">
