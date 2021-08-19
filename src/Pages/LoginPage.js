@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
+//Functions and Components
+// import { addMember } from "../store/login/addMember";
+
 //Actions and Selectors
 import { getChatClient } from "../store/login/actions";
 import { selectChatClient } from "../store/login/selectors";
@@ -18,12 +21,14 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (chatClient) {
+      // SubscribeChannels(userId);
       history.push("/lobby");
     }
   }, [chatClient]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     dispatch(getChatClient(userId));
   };
 

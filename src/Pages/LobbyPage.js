@@ -4,6 +4,9 @@ import { useHistory } from "react-router-dom";
 import { StreamChat } from "stream-chat";
 import moment from "moment";
 
+// Components and functions
+import { GetChannels } from "../Components/GetChannels";
+
 //Actions and Selectors
 import {
   selectChatClient,
@@ -13,13 +16,15 @@ import {
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 // Instantiate the client with getInstance().
-//   Obs: It doesn’t actually make an API call.
-//   It is a constructor function to create a JS object with lots of functions.
+// Obs: It doesn’t actually make an API call.
+// It is a constructor function to create a JS object with lots of functions.
 const client = StreamChat.getInstance(API_KEY);
 
 export default function LobbyPage() {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [channels, setChannels] = useState();
+  const [newChannel, setNewChannel] = useState("");
 
   const history = useHistory();
   const chatClient = useSelector(selectChatClient);
@@ -36,11 +41,17 @@ export default function LobbyPage() {
 
   // Watch channel
   const watchChannel = async () => {
-    const state = await channel.watch();
-    console.log("what is state?", state);
+    try {
+      const state = await channel.watch();
+      // console.log("what is state?", state);
+    } catch (error) {
+      console.log("watch channel failed", error);
+    }
   };
   useEffect(() => {
     watchChannel();
+    //Query channels
+    GetChannels(client, setChannels, userId);
   }, []); //empty array to run just once at mounting component - for now
 
   // Function to get new messages
@@ -63,18 +74,31 @@ export default function LobbyPage() {
     setNewMessage("");
   };
 
-  console.log(newMessage, messages);
+  console.log(channels);
+  console.log(newChannel);
 
   return (
     <div className="container border">
       <h1>Lobby Page</h1>
       <div className="row border" style={{ height: "90vh" }}>
         <div className="col-3 border" style={{ height: "100%" }}>
-          <h2>Channel list</h2>
-          <div className="border">channel #1</div>
+          <h3>Channel list</h3>
+          <div>
+            {channels?.map((channel, index) => (
+              <button
+                type="button"
+                className="btn btn-primary btn-block p-1 m-1"
+                key={index}
+                onClick={() => setNewChannel(channel.id)}
+              >
+                {channel.id}
+              </button>
+            ))}
+          </div>
         </div>
+
         <div className="col-9 border">
-          <div className="border" style={{ height: "95%" }}>
+          <div className="border" style={{ height: "93%" }}>
             <h2>Chat</h2>
 
             {messages.map((message, index) => (
@@ -93,16 +117,21 @@ export default function LobbyPage() {
               </div>
             ))}
           </div>
-          <div className="border py-1">
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                placeholder="type your message"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-              />
-              <button>send</button>
-            </form>
+          <div className="border py-1 row">
+            <div className="col-9">
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="type your message"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                />
+              </form>
+            </div>
+            <div className="col-3">
+              <button className="btn btn-primary">send</button>
+            </div>
           </div>
         </div>
       </div>

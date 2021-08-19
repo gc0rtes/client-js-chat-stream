@@ -86,6 +86,8 @@ const Join = () => {
     // Split Method return string into an array
     const membersArr = channelMembers.split(",").map((member) => member.trim());
     console.log("what is membersArr?", membersArr);
+
+    //call createChannel
     createChannel(channelType, channelId, membersArr, channelName).then((r) =>
       console.log(r)
     );
