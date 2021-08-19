@@ -12,6 +12,7 @@ export default function Test() {
       {test && <p>true</p>}
 
       {!test && <p> false </p>}
+      <div className="spinner-border text-primary" role="status"></div>
     </div>
   );
 }

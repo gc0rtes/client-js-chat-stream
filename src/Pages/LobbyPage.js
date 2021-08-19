@@ -95,9 +95,9 @@ export default function LobbyPage() {
       <div className="row border" style={{ height: "90vh" }}>
         <div className="col-3 border" style={{ height: "100%" }}>
           <h3>Channel list</h3>
-          <div>
+          <div className="text-center">
             {!channels ? (
-              <div class="spinner-border text-primary"></div>
+              <div className="spinner-border text-primary"></div>
             ) : (
               channels.map((channel, index) => (
                 <button
