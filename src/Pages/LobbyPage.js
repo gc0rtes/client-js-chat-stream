@@ -6,6 +6,7 @@ import moment from "moment";
 
 // Components and functions
 import { GetChannels } from "../Components/GetChannels";
+import { AddMemberChannels } from "../Components/AddMemberChannels";
 
 //Actions and Selectors
 import {
@@ -23,7 +24,8 @@ const client = StreamChat.getInstance(API_KEY);
 export default function LobbyPage() {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [channels, setChannels] = useState();
+  const [addMember, setAddMember] = useState(null);
+  const [channels, setChannels] = useState(null);
   const [newChannel, setNewChannel] = useState("");
 
   const history = useHistory();
@@ -48,11 +50,20 @@ export default function LobbyPage() {
       console.log("watch channel failed", error);
     }
   };
+
+  // Start to watch and addMember to default channels
   useEffect(() => {
     watchChannel();
-    //Query channels
-    GetChannels(client, setChannels, userId);
-  }, []); //empty array to run just once at mounting component - for now
+    AddMemberChannels(userId, setAddMember);
+  }, []);
+
+  //Query channels
+  useEffect(() => {
+    //Check if new users were added before query
+    if (addMember) {
+      GetChannels(client, setChannels, userId);
+    }
+  }, [addMember]);
 
   // Function to get new messages
   useEffect(() => {
@@ -74,8 +85,9 @@ export default function LobbyPage() {
     setNewMessage("");
   };
 
-  console.log(channels);
-  console.log(newChannel);
+  console.log("channels", channels);
+  console.log("newChannel", newChannel);
+  console.log("addMember", addMember);
 
   return (
     <div className="container border">
@@ -84,22 +96,26 @@ export default function LobbyPage() {
         <div className="col-3 border" style={{ height: "100%" }}>
           <h3>Channel list</h3>
           <div>
-            {channels?.map((channel, index) => (
-              <button
-                type="button"
-                className="btn btn-primary btn-block p-1 m-1"
-                key={index}
-                onClick={() => setNewChannel(channel.id)}
-              >
-                {channel.id}
-              </button>
-            ))}
+            {!channels ? (
+              <div class="spinner-border text-primary"></div>
+            ) : (
+              channels.map((channel, index) => (
+                <button
+                  type="button"
+                  className="btn btn-primary btn-block p-1 m-1"
+                  key={index}
+                  onClick={() => setNewChannel(channel.id)}
+                >
+                  {channel.id}
+                </button>
+              ))
+            )}
           </div>
         </div>
 
         <div className="col-9 border">
           <div className="border" style={{ height: "93%" }}>
-            <h2>Chat</h2>
+            <h2>Channel - </h2>
 
             {messages.map((message, index) => (
               // message.user.id === userId ? setToggleAlign("text-left") :  setToggleAlign("text-right");

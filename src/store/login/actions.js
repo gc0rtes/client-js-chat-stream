@@ -34,27 +34,10 @@ export const getChatClient = (userId) => {
 
       //make it avaliable on global state
       dispatch(chatClientConnected(chatClient));
-
-      // Call function to add member to channels
-      console.log("addMember called from getChatClient");
-      addMember(userId);
     } catch (error) {
       // use client.disconnect() before trying to connect as a different user
       console.log("client connection failed", error);
       client.disconnectUser();
     }
   };
-};
-
-//Call endpoint to add member to channels
-const addMember = async (userId) => {
-  try {
-    console.log("addMember called from addMember");
-    const response = await axios.get(
-      `http://localhost:${PORT}/add?userId=${userId}`
-    );
-    console.log("what is add member response?", response);
-  } catch (error) {
-    console.log("add member failed", error);
-  }
 };
